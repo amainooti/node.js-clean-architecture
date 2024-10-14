@@ -1,0 +1,7 @@
+sudo docker run -it \
+  --network my-network \
+  -p 1234:1234 \
+  -v $(pwd)/logs:/srv/api/logs \
+  -e MONGO_URL=mongodb://mongo:27017/post-clean-code \
+  -e REDIS_URL=redis://redis:6379 \
+  clean-node

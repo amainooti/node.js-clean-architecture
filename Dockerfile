@@ -1,8 +1,9 @@
 FROM        node:22.6-alpine as builder
 COPY        package.json /srv/node-clean-architecture/
 WORKDIR     /srv/node-clean-architecture/
+COPY        package.json yarn.lock ./
+RUN         yarn install --frozen-lockfile
 
-RUN         yarn install --production
 
 COPY        .babelrc /srv/node-clean-architecture/
 COPY        .eslintrc.json /srv/node-clean-architecture/
@@ -31,8 +32,8 @@ COPY        --from=builder /srv/node-clean-architecture/build /srv/api/build
 COPY        --from=builder /srv/node-clean-architecture/package.json /srv/api/package.json
 
 RUN         deluser --remove-home node \
-            && addgroup -S node -g 9999 \
-            && adduser -S -G node -u 9999 node
+    && addgroup -S node -g 9999 \
+    && adduser -S -G node -u 9999 node
 
 CMD         ["npm", "start"]
 
